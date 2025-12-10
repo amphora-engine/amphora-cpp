@@ -72,6 +72,13 @@ struct InputState
 #undef KMAP
 };
 
+enum MouseButton
+{
+	MouseLeftButton = 1,
+	MouseMiddleButton,
+	MouseRightButton
+};
+
 struct AmphoraParticle
 {
 	float x, y, w, h, vx, vy;
