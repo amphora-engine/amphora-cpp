@@ -354,9 +354,9 @@ load_engine()
 	/* TODO: update placeholder library paths with real detection logic */
 #if defined(__APPLE__) || defined(__linux__)
 #ifdef DEBUG
-	engine = dlopen("/Users/caleb/src/amphora-engine/cmake-build-debug/src/libamphora-vanilla-v0.2.3-alpha-dbg.dylib", RTLD_NOW);
+	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-debug/src/libamphora-vanilla-v0.2.3-alpha-dbg.dylib", RTLD_NOW);
 #else
-	engine = dlopen("/Users/caleb/src/amphora-engine/cmake-build-release/src/libamphora-vanilla-v0.2.3-alpha.dylib", RTLD_NOW);
+	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-release/src/libamphora-vanilla-v0.2.3-alpha.dylib", RTLD_NOW);
 #endif
 
 	if (engine == nullptr)
@@ -394,7 +394,7 @@ load_engine()
 		switch (i)
 		{
 			case 1:
-				Amphora::aapi_v1 = (AmphoraAPI_V1 *)astart->GetAPI(1);
+				Amphora::aapi_v1 = static_cast<AmphoraAPI_V1 *>(astart->GetAPI(1));
 				break;
 			default:
 				std::cerr << "Bad API version: " << i << std::endl;
