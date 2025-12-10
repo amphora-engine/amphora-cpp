@@ -15,11 +15,12 @@ public:
 	init()
 	override
 	{
-		welcomeText = CreateString("Roboto", 32, 0, 0, 0, Colors::white, true,
-			"Welcome to the Amphora Game Engine C++ Edition!");
-		quitText = CreateString("Roboto", 18, 0, 0, -0, Colors::white, true,
-			"(Press ESC to quit)");
+		SetBGColor(Colors::sky);
 
+		welcomeText = CreateString("Roboto", 32, 0, 0, 0, Colors::black, true,
+			"Welcome to the Amphora Game Engine C++ Edition!");
+		quitText = CreateString("Roboto", 18, 0, 0, -0, Colors::black, true,
+			"Press ESC (or click this text) to quit");
 
 		Vector2 welcomeTextDimensions = GetStringDimensions(welcomeText);
 		Vector2 quitTextDimensions = GetStringDimensions(quitText);
@@ -38,23 +39,18 @@ public:
 	{
 		bool welcomeTextShown = false;
 
-		if (TypeString(welcomeText, 64, [](int n, char c)
-			{
-				PlaySFX("keystroke", -1, 0);
-			}) == TYPEWRITER_DONE)
+		if (TypeString(welcomeText, 24, nullptr) == TYPEWRITER_DONE)
 		{
 			welcomeTextShown = true;
 		}
 		if (welcomeTextShown)
 		{
 			ShowString(quitText);
-			TypeString(quitText, 64, [](int n, char c)
-			{
-				PlaySFX("keystroke", -1, 0);
-			});
+			TypeString(quitText, 24, nullptr);
 		}
 
 		if (input->quit) QuitGame();
+		if (ObjectClicked(quitText, MouseLeftButton, nullptr)) QuitGame();
 	}
 
 	void

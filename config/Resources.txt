@@ -6,6 +6,5 @@ LOADFONT(Roboto, content/font/Roboto/Roboto-Regular.ttf)
 // LOADMAP(name, path)
 
 // LOADSFX(name, path)
-LOADSFX(keystroke, content/sfx/keypress-019.wav)
 
 // LOADMUSIC(name, path)
