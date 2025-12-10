@@ -99,16 +99,10 @@ struct AmphoraAPI_V1
 #define AMPHORA_VFUNCTION_V1(ret, name, sig_args, p_sig_args, call_args) ret (*name) p_sig_args;
 #define AMPHORA_FUNCTION_V1(ret, name, sig_args, call_args) ret (*name) sig_args;
 #define AMPHORA_ROUTINE_V1(name, sig_args, call_args) void (*name) sig_args;
-#define AMPHORA_VFUNCTION_V1_OBSOLETE(ret, name, sig_args, p_sig_args, call_args) ret (*name) p_sig_args;
-#define AMPHORA_FUNCTION_V1_OBSOLETE(ret, name, sig_args, call_args) ret (*name) sig_args;
-#define AMPHORA_ROUTINE_V1_OBSOLETE(name, sig_args, call_args) void (*name) sig_args;
 	#include "amphora_api.def"
 #undef AMPHORA_VFUNCTION_V1
 #undef AMPHORA_FUNCTION_V1
 #undef AMPHORA_ROUTINE_V1
-#undef AMPHORA_VFUNCTION_V1_OBSOLETE
-#undef AMPHORA_FUNCTION_V1_OBSOLETE
-#undef AMPHORA_ROUTINE_V1_OBSOLETE
 };
 
 namespace Amphora
