@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+.vs
+build
+build.*
+out
+cmake-build-debug*
+cmake-build-release*
