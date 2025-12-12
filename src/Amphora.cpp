@@ -52,10 +52,239 @@ namespace Amphora
 	}
 #define AMPHORA_FUNCTION_V1(ret, name, sig_args, call_args) ret Amphora::name sig_args { return aapi_v1->name call_args; }
 #define AMPHORA_ROUTINE_V1(name, sig_args, call_args) void Amphora::name sig_args { aapi_v1->name call_args; }
+#define AMPHORA_METHOD_V1(ret, name, sig_args, call_args)
 	#include "amphora_api.def"
 #undef AMPHORA_VFUNCTION_V1
 #undef AMPHORA_FUNCTION_V1
 #undef AMPHORA_ROUTINE_V1
+#undef AMPHORA_METHOD_V1
+
+	Sprite::Sprite(const char *image_name, float x, float y, float scale, bool flip, bool stationary, int order)
+	{
+		imageHandle = aapi_v1->CreateSprite(image_name, x, y, scale, flip, stationary, order);
+
+		if (imageHandle == nullptr)
+		{
+			std::cerr << "Failed to create sprite" << std::endl;
+		}
+	}
+
+	Sprite::~Sprite()
+	{
+		aapi_v1->FreeSprite(imageHandle);
+	}
+
+	Vector2f Sprite::Position()
+	{
+		return aapi_v1->GetSpritePosition(imageHandle);
+	}
+
+	Vector2f Sprite::Center()
+	{
+		return aapi_v1->GetSpriteCenter(imageHandle);
+	}
+
+	bool Sprite::Flipped()
+	{
+		return aapi_v1->IsSpriteFlipped(imageHandle);
+	}
+
+	int Sprite::AddFrameset(const char *name, const char *override_img, int sx, int sy,
+		int w, int h, float off_x, float off_y, int num_frames, int delay)
+	{
+		return aapi_v1->AddFrameset(imageHandle, name, override_img, sx, sy, w, h, off_x, off_y, num_frames, delay);
+	}
+
+	void Sprite::SetFrameset(const char *name)
+	{
+		aapi_v1->SetFrameset(imageHandle, name);
+	}
+
+	void Sprite::PlayOneshot(const char *name, void (*callback)())
+	{
+		aapi_v1->PlayOneshot(imageHandle, name, callback);
+	}
+
+	int Sprite::SetFramesetAnimationTime(const char *name, int delay)
+	{
+		return aapi_v1->SetFramesetAnimationTime(imageHandle, name, delay);
+	}
+
+	AmphoraImage *Sprite::Reorder(int order)
+	{
+		return aapi_v1->ReorderSprite(imageHandle, order);
+	}
+
+	int Sprite::SetLocation(float x, float y)
+	{
+		return aapi_v1->SetSpriteLocation(imageHandle, x, y);
+	}
+
+	int Sprite::Move(float delta_x, float delta_y)
+	{
+		return aapi_v1->MoveSprite(imageHandle, delta_x, delta_y);
+	}
+
+	int Sprite::Flip()
+	{
+		return aapi_v1->FlipSprite(imageHandle);
+	}
+
+	int Sprite::Unflip()
+	{
+		return aapi_v1->UnflipSprite(imageHandle);
+	}
+
+	int Sprite::Show()
+	{
+		return aapi_v1->ShowSprite(imageHandle);
+	}
+
+	int Sprite::Hide()
+	{
+		return aapi_v1->HideSprite(imageHandle);
+	}
+
+	bool Sprite::CheckCollision(const Sprite& other)
+	{
+		return aapi_v1->CheckCollision(imageHandle, other.imageHandle);
+	}
+
+	bool Sprite::CheckCollision(Sprite *other)
+	{
+		return aapi_v1->CheckCollision(imageHandle, other->imageHandle);
+	}
+
+	AmphoraCollision Sprite::CheckObjectGroupCollision(const char *name)
+	{
+		return aapi_v1->CheckObjectGroupCollision(imageHandle, name);
+	}
+
+	bool Sprite::MouseOver()
+	{
+		return aapi_v1->ObjectHover(imageHandle);
+	}
+
+	bool Sprite::Clicked(int button, void (*callback)())
+	{
+		return aapi_v1->ObjectClicked(imageHandle, button, callback);
+	}
+
+	void Sprite::ApplyFX(void (*fx)(AmphoraSurface *))
+	{
+		aapi_v1->ApplyFXToImage(imageHandle, fx);
+	}
+
+	void Sprite::MakeCameraTarget()
+	{
+		aapi_v1->SetCameraTarget(imageHandle);
+	}
+
+	void Sprite::Reset()
+	{
+		aapi_v1->ResetImage(imageHandle);
+	}
+
+	Emitter::Emitter(float x, float y, float w, float h, float start_x, float start_y,
+		int spread_x, int spread_y, int count, float p_w, float p_h, AmphoraColor color, bool stationary, int order,
+		void (*update_fn)(int, int, AmphoraParticle *, AmphoraParticleExt *, const AmphoraFRect *))
+	{
+		emitterHandle = aapi_v1->CreateEmitter(x, y, w, h, start_x, start_y, spread_x, spread_y, count, p_w, p_h, color, stationary, order, update_fn);
+	}
+
+	Emitter::~Emitter()
+	{
+		aapi_v1->DestroyEmitter(emitterHandle);
+	}
+
+	String::String(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, const char *fmt, ...)
+	{
+		va_list args;
+
+		va_start(args, fmt);
+		stringHandle = aapi_v1->CreateString(font_name, pt, x, y, order, color, stationary, fmt, args);
+		va_end(args);
+	}
+	String::~String()
+	{
+		aapi_v1->FreeString(stringHandle);
+	}
+
+	void String::Show()
+	{
+		aapi_v1->ShowString(stringHandle);
+	}
+
+	void String::Hide()
+	{
+		aapi_v1->HideString(stringHandle);
+	}
+
+	size_t String::Length()
+	{
+		return aapi_v1->GetStringLength(stringHandle);
+	}
+
+	size_t String::NumCharsDisplayed()
+	{
+		return aapi_v1->GetNumCharactersDisplayed(stringHandle);
+	}
+
+	const char *String::Text()
+	{
+		return aapi_v1->GetStringText(stringHandle);
+	}
+
+	char String::CharAtIndex(int idx)
+	{
+		return aapi_v1->GetStringCharAtIndex(stringHandle, idx);
+	}
+
+	Vector2 String::Dimensions()
+	{
+		return aapi_v1->GetStringDimensions(stringHandle);
+	}
+
+	bool String::MouseOver()
+	{
+		return aapi_v1->ObjectHover(stringHandle);
+	}
+
+	bool String::Clicked(int button, void (*callback)())
+	{
+		return aapi_v1->ObjectClicked(stringHandle, button, callback);
+	}
+
+	AmphoraString *String::UpdateText(const char *fmt, ...)
+	{
+		va_list args;
+
+		va_start(args, fmt);
+		AmphoraString *ret = aapi_v1->UpdateStringText(stringHandle, fmt, args);
+		va_end(args);
+
+		return ret;
+	}
+
+	AmphoraString *String::SetCharsDisplayed(size_t n)
+	{
+		return aapi_v1->UpdateStringCharsDisplayed(stringHandle, n);
+	}
+
+	AmphoraString *String::SetPosition(float x, float y)
+	{
+		return aapi_v1->UpdateStringPosition(stringHandle, x, y);
+	}
+
+	TypewriterStatus String::Typewriter(int ms, void (*callback)(int, char))
+	{
+		return aapi_v1->TypeString(stringHandle, ms, callback);
+	}
+
+	TypewriterStatus String::SetTypewriterSpeed(int ms)
+	{
+		return aapi_v1->SetStringTypeSpeed(stringHandle, ms);
+	}
 }
 
 /* Controller data */
@@ -351,12 +580,11 @@ load_engine()
 	void *engine;
 	AmphoraStartup *(*connect)();
 
-	/* TODO: update placeholder library paths with real detection logic */
 #if defined(__APPLE__) || defined(__linux__)
 #ifdef DEBUG
-	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-debug/src/libamphora-vanilla-v0.2.3-alpha-dbg.dylib", RTLD_NOW);
+	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-debug/src/libamphora-vanilla-v0.2.4-alpha-dbg.dylib", RTLD_NOW);
 #else
-	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-release/src/libamphora-vanilla-v0.2.3-alpha.dylib", RTLD_NOW);
+	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-release/src/libamphora-vanilla-v0.2.4-alpha.dylib", RTLD_NOW);
 #endif
 
 	if (engine == nullptr)
@@ -394,7 +622,7 @@ load_engine()
 		switch (i)
 		{
 			case 1:
-				Amphora::aapi_v1 = static_cast<AmphoraAPI_V1 *>(astart->GetAPI(1));
+				Amphora::aapi_v1 = (AmphoraAPI_V1 *)astart->GetAPI(1);
 				break;
 			default:
 				std::cerr << "Bad API version: " << i << std::endl;

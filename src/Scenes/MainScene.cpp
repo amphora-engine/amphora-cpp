@@ -4,8 +4,10 @@ using namespace Amphora;
 
 class MainScene final : public Scene
 {
-	AmphoraString *welcomeText = nullptr;
-	AmphoraString *quitText = nullptr;
+	String welcomeText = String("Roboto", 32, 0, 0, 0, Colors::black, true,
+		"Welcome to the Amphora Game Engine C++ Edition!");
+	String quitText = String("Roboto", 18, 0, 0, -0, Colors::black, true,
+		"Press ESC (or click this text) to quit");
 	Vector2 screenCenter = GetRenderLogicalSize();
 
 public:
@@ -17,20 +19,13 @@ public:
 	{
 		SetBGColor(Colors::sky);
 
-		welcomeText = CreateString("Roboto", 32, 0, 0, 0, Colors::black, true,
-			"Welcome to the Amphora Game Engine C++ Edition!");
-		quitText = CreateString("Roboto", 18, 0, 0, -0, Colors::black, true,
-			"Press ESC (or click this text) to quit");
-
-		Vector2 welcomeTextDimensions = GetStringDimensions(welcomeText);
-		Vector2 quitTextDimensions = GetStringDimensions(quitText);
-		UpdateStringPosition(welcomeText,
-			static_cast<float>(screenCenter.x / 2 - welcomeTextDimensions.x / 2),
+		Vector2 welcomeTextDimensions = welcomeText.Dimensions();
+		Vector2 quitTextDimensions = quitText.Dimensions();
+		welcomeText.SetPosition(static_cast<float>(screenCenter.x / 2 - welcomeTextDimensions.x / 2),
 			static_cast<float>(screenCenter.y / 2 - welcomeTextDimensions.y));
-		UpdateStringPosition(quitText,
-			static_cast<float>(screenCenter.x / 2 - quitTextDimensions.x / 2),
+		quitText.SetPosition(static_cast<float>(screenCenter.x / 2 - quitTextDimensions.x / 2),
 			static_cast<float>(screenCenter.y / 2 + welcomeTextDimensions.y + 12));
-		HideString(quitText);
+		quitText.Hide();
 	}
 
 	void
@@ -39,27 +34,24 @@ public:
 	{
 		bool welcomeTextShown = false;
 
-		if (TypeString(welcomeText, 24, nullptr) == TYPEWRITER_DONE)
+		if (welcomeText.Typewriter(24, nullptr) == TYPEWRITER_DONE)
 		{
 			welcomeTextShown = true;
 		}
 		if (welcomeTextShown)
 		{
-			ShowString(quitText);
-			TypeString(quitText, 24, nullptr);
+			quitText.Show();
+			quitText.Typewriter(24, nullptr);
 		}
 
 		if (input->quit) QuitGame();
-		if (ObjectClicked(quitText, MouseLeftButton, nullptr)) QuitGame();
+		if (quitText.Clicked(MouseLeftButton, nullptr)) QuitGame();
 	}
 
 	void
 	destroy()
 	override
-	{
-		welcomeText = nullptr;
-		quitText = nullptr;
-	}
+	{}
 };
 
 Amphora_RegisterScene(MainScene);
