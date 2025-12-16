@@ -4,9 +4,9 @@ using namespace Amphora;
 
 class MainScene final : public Scene
 {
-	String welcomeText = String("Roboto", 32, 0, 0, 0, Colors::black, true,
+	String welcomeText = String("Roboto", 32, 0, 0, 0, Colors::black, true, false,
 		"Welcome to the Amphora Game Engine C++ Edition!");
-	String quitText = String("Roboto", 18, 0, 0, -0, Colors::black, true,
+	String quitText = String("Roboto", 18, 0, 0, -0, Colors::black, true, false,
 		"Press ESC (or click this text) to quit");
 	Vector2 screenCenter = GetRenderLogicalSize();
 

@@ -14,15 +14,15 @@ AMPHORA_FUNCTION_V1(int, UnregisterEvent, (const char *name), (name));
 AMPHORA_METHOD_V1(Vector2f, GetSpritePosition, (const AmphoraImage *spr), (spr));
 AMPHORA_METHOD_V1(Vector2f, GetSpriteCenter, (const AmphoraImage *spr), (spr));
 AMPHORA_METHOD_V1(bool, IsSpriteFlipped, (const AmphoraImage *spr), (spr));
-AMPHORA_METHOD_V1(AmphoraImage *, CreateSprite, (const char *image_name, float x, float y, float scale, bool flip, bool stationary, int order),
-	(image_name, x, y, scale, flip, stationary, order));
+AMPHORA_METHOD_V1(AmphoraImage *, CreateSprite, (const char *image_name, float x, float y, float scale, bool flip, bool stationary, bool transient, int order),
+	(image_name, x, y, scale, flip, stationary, transient, order));
 AMPHORA_METHOD_V1(int, AddFrameset, (AmphoraImage *spr, const char *name, const char *override_img, int sx, int sy,
 	int w, int h, float off_x, float off_y, int num_frames, int delay),
 	(spr, name, override_img, sx, sy, w, h, off_x, off_y, num_frames, delay));
 AMPHORA_METHOD_V1(void, SetFrameset, (AmphoraImage *spr, const char *name), (spr, name));
 AMPHORA_METHOD_V1(void, PlayOneshot, (AmphoraImage *spr, const char *name, void (*callback)(void)), (spr, name, callback));
 AMPHORA_METHOD_V1(int, SetFramesetAnimationTime, (AmphoraImage *spr, const char *name, int delay), (spr, name, delay));
-AMPHORA_METHOD_V1(AmphoraImage *, ReorderSprite, (AmphoraImage *spr, int order), (spr, order));
+AMPHORA_METHOD_V1(int, ReorderSprite, (AmphoraImage *spr, int order), (spr, order));
 AMPHORA_METHOD_V1(int, SetSpriteLocation, (AmphoraImage *spr, float x, float y), (spr, x, y));
 AMPHORA_METHOD_V1(int, MoveSprite, (AmphoraImage *spr, float delta_x, float delta_y), (spr, delta_x, delta_y));
 AMPHORA_METHOD_V1(int, FlipSprite, (AmphoraImage *spr), (spr));
@@ -116,8 +116,8 @@ AMPHORA_FUNCTION_V1(int, ShowMapLayer, (const char *name, int t), (name, t));
 
 // Fonts
 AMPHORA_METHOD_V1(AmphoraString *, CreateString,
-	(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, const char *fmt, va_list args),
-	(font_name, pt, x, y, order, color, stationary, fmt, args));
+	(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, bool transient, const char *fmt, va_list args),
+	(font_name, pt, x, y, order, color, stationary, transient, fmt, args));
 AMPHORA_METHOD_V1(void, ShowString, (AmphoraString *msg), (msg));
 AMPHORA_METHOD_V1(void, HideString, (AmphoraString *msg), (msg));
 AMPHORA_METHOD_V1(size_t, GetStringLength, (const AmphoraString *msg), (msg));
@@ -125,11 +125,11 @@ AMPHORA_METHOD_V1(size_t, GetNumCharactersDisplayed, (const AmphoraString *msg),
 AMPHORA_METHOD_V1(const char *, GetStringText, (AmphoraString *msg), (msg));
 AMPHORA_METHOD_V1(char, GetStringCharAtIndex, (const AmphoraString *msg, int idx), (msg, idx));
 AMPHORA_METHOD_V1(Vector2, GetStringDimensions, (const AmphoraString *msg), (msg));
-AMPHORA_METHOD_V1(AmphoraString *, UpdateStringText,
+AMPHORA_METHOD_V1(int, UpdateStringText,
 	(AmphoraString *msg, const char *fmt, va_list args),
 	(msg, fmt, args));
-AMPHORA_METHOD_V1(AmphoraString *, UpdateStringCharsDisplayed, (AmphoraString *msg, size_t n), (msg, n));
-AMPHORA_METHOD_V1(AmphoraString *, UpdateStringPosition, (AmphoraString *msg, float x, float y), (msg, x, y));
+AMPHORA_ROUTINE_V1(UpdateStringCharsDisplayed, (AmphoraString *msg, size_t n), (msg, n));
+AMPHORA_ROUTINE_V1(UpdateStringPosition, (AmphoraString *msg, float x, float y), (msg, x, y));
 AMPHORA_METHOD_V1(void, FreeString, (AmphoraString *msg), (msg));
 AMPHORA_METHOD_V1(void, RenderString, (const AmphoraString *msg), (msg));
 

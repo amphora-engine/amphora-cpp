@@ -136,7 +136,7 @@ namespace Amphora
 	{
 		AmphoraImage *imageHandle = nullptr;
 	public:
-		Sprite(const char *image_name, float x, float y, float scale, bool flip, bool stationary, int order);
+		Sprite(const char *image_name, float x, float y, float scale, bool flip, bool stationary, bool transient, int order);
 		~Sprite();
 
 		Vector2f Position();
@@ -147,7 +147,7 @@ namespace Amphora
 		void SetFrameset(const char *name);
 		void PlayOneshot(const char *name, void (*callback)());
 		int SetFramesetAnimationTime(const char *name, int delay);
-		AmphoraImage *Reorder(int order);
+		int Reorder(int order);
 		int SetLocation(float x, float y);
 		int Move(float delta_x, float delta_y);
 		int Flip();
@@ -180,7 +180,7 @@ namespace Amphora
 		AmphoraString *stringHandle = nullptr;
 
 	public:
-		String(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, const char *fmt, ...);
+		String(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, bool transient, const char *fmt, ...);
 		~String();
 
 		void Show();
@@ -192,9 +192,9 @@ namespace Amphora
 		Vector2 Dimensions();
 		bool MouseOver();
 		bool Clicked(int button, void (*callback)());
-		AmphoraString *UpdateText(const char *fmt, ...);
-		AmphoraString *SetCharsDisplayed(size_t n);
-		AmphoraString *SetPosition(float x, float y);
+		int UpdateText(const char *fmt, ...);
+		void SetCharsDisplayed(size_t n);
+		void SetPosition(float x, float y);
 		TypewriterStatus Typewriter(int ms, void (*callback)(int, char));
 		TypewriterStatus SetTypewriterSpeed(int ms);
 	};

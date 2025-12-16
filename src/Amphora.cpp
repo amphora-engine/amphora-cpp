@@ -59,9 +59,9 @@ namespace Amphora
 #undef AMPHORA_ROUTINE_V1
 #undef AMPHORA_METHOD_V1
 
-	Sprite::Sprite(const char *image_name, float x, float y, float scale, bool flip, bool stationary, int order)
+	Sprite::Sprite(const char *image_name, float x, float y, float scale, bool flip, bool stationary, bool transient, int order)
 	{
-		imageHandle = aapi_v1->CreateSprite(image_name, x, y, scale, flip, stationary, order);
+		imageHandle = aapi_v1->CreateSprite(image_name, x, y, scale, flip, stationary, transient, order);
 
 		if (imageHandle == nullptr)
 		{
@@ -110,7 +110,7 @@ namespace Amphora
 		return aapi_v1->SetFramesetAnimationTime(imageHandle, name, delay);
 	}
 
-	AmphoraImage *Sprite::Reorder(int order)
+	int Sprite::Reorder(int order)
 	{
 		return aapi_v1->ReorderSprite(imageHandle, order);
 	}
@@ -197,12 +197,12 @@ namespace Amphora
 		aapi_v1->DestroyEmitter(emitterHandle);
 	}
 
-	String::String(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, const char *fmt, ...)
+	String::String(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, bool transient, const char *fmt, ...)
 	{
 		va_list args;
 
 		va_start(args, fmt);
-		stringHandle = aapi_v1->CreateString(font_name, pt, x, y, order, color, stationary, fmt, args);
+		stringHandle = aapi_v1->CreateString(font_name, pt, x, y, order, color, stationary, transient, fmt, args);
 		va_end(args);
 	}
 	String::~String()
@@ -255,25 +255,25 @@ namespace Amphora
 		return aapi_v1->ObjectClicked(stringHandle, button, callback);
 	}
 
-	AmphoraString *String::UpdateText(const char *fmt, ...)
+	int String::UpdateText(const char *fmt, ...)
 	{
 		va_list args;
 
 		va_start(args, fmt);
-		AmphoraString *ret = aapi_v1->UpdateStringText(stringHandle, fmt, args);
+		int ret = aapi_v1->UpdateStringText(stringHandle, fmt, args);
 		va_end(args);
 
 		return ret;
 	}
 
-	AmphoraString *String::SetCharsDisplayed(size_t n)
+	void String::SetCharsDisplayed(size_t n)
 	{
-		return aapi_v1->UpdateStringCharsDisplayed(stringHandle, n);
+		aapi_v1->UpdateStringCharsDisplayed(stringHandle, n);
 	}
 
-	AmphoraString *String::SetPosition(float x, float y)
+	void String::SetPosition(float x, float y)
 	{
-		return aapi_v1->UpdateStringPosition(stringHandle, x, y);
+		aapi_v1->UpdateStringPosition(stringHandle, x, y);
 	}
 
 	TypewriterStatus String::Typewriter(int ms, void (*callback)(int, char))
