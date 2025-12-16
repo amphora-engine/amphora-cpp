@@ -145,7 +145,7 @@ namespace Amphora
 		int AddFrameset(const char *name, const char *override_img, int sx, int sy,
 			int w, int h, float off_x, float off_y, int num_frames, int delay);
 		void SetFrameset(const char *name);
-		void PlayOneshot(const char *name, void (*callback)());
+		void PlayOneshot(const char *name, void (*callback)() = nullptr);
 		int SetFramesetAnimationTime(const char *name, int delay);
 		int Reorder(int order);
 		int SetLocation(float x, float y);
@@ -158,7 +158,7 @@ namespace Amphora
 		bool CheckCollision(Sprite *other);
 		AmphoraCollision CheckObjectGroupCollision(const char *name);
 		bool MouseOver();
-		bool Clicked(int button, void (*callback)());
+		bool Clicked(int button, void (*callback)() = nullptr);
 		void ApplyFX(void (*fx)(AmphoraSurface *));
 		void MakeCameraTarget();
 		void Reset();
@@ -191,11 +191,11 @@ namespace Amphora
 		char CharAtIndex(int idx);
 		Vector2 Dimensions();
 		bool MouseOver();
-		bool Clicked(int button, void (*callback)());
+		bool Clicked(int button, void (*callback)() = nullptr);
 		int UpdateText(const char *fmt, ...);
 		void SetCharsDisplayed(size_t n);
 		void SetPosition(float x, float y);
-		TypewriterStatus Typewriter(int ms, void (*callback)(int, char));
+		TypewriterStatus Typewriter(int ms, void (*callback)(int, char) = nullptr);
 		TypewriterStatus SetTypewriterSpeed(int ms);
 	};
 }

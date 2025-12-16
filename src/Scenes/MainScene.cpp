@@ -34,18 +34,18 @@ public:
 	{
 		bool welcomeTextShown = false;
 
-		if (welcomeText.Typewriter(24, nullptr) == TYPEWRITER_DONE)
+		if (welcomeText.Typewriter(24) == TYPEWRITER_DONE)
 		{
 			welcomeTextShown = true;
 		}
 		if (welcomeTextShown)
 		{
 			quitText.Show();
-			quitText.Typewriter(24, nullptr);
+			quitText.Typewriter(24);
 		}
 
 		if (input->quit) QuitGame();
-		if (quitText.Clicked(MouseLeftButton, nullptr)) QuitGame();
+		if (quitText.Clicked(MouseLeftButton)) QuitGame();
 	}
 
 	void
