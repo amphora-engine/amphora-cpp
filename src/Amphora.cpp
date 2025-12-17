@@ -39,7 +39,14 @@ static AmphoraStartup *astart;
 
 namespace Amphora
 {
+	union input_state_u {
+		InputState state;
+		uint32_t bits;
+	};
+	static input_state_u input_state;
+
 	static AmphoraAPI_V1 *aapi_v1;
+	const InputState& Actions = input_state.state;
 
 #define AMPHORA_VFUNCTION_V1(ret, name, sig_args, p_sig_args, call_args) \
 	ret Amphora::name sig_args \
@@ -298,11 +305,6 @@ enum input_actions {
 };
 _Static_assert(ACTION_COUNT <= 32, "Cannot define more than 32 actions");
 
-union input_state_u {
-	InputState state;
-	uint32_t bits;
-};
-
 static const char *action_names[] = {
 #define KMAP(action, key, gamepad) #action,
 	#include "Keymap.txt"
@@ -326,8 +328,6 @@ static const char *controller_button_names[] = {
 	#include "Keymap.txt"
 #undef KMAP
 };
-
-static input_state_u input_state;
 
 /* Scene data */
 
@@ -651,13 +651,12 @@ main()
 {
 	if (load_engine() == -1) return -1;
 
-	Amphora::Actions = &input_state.state;
 	Amphora::CurrentFrame.bind(astart->GetFrameAddress());
 
 	astart->RegisterGameData(GAME_AUTHOR, GAME_TITLE);
 	astart->RegisterWindowTitle(GAME_TITLE);
 	astart->RegisterPrefs(GAME_AUTHOR, GAME_TITLE, WINDOW_X, WINDOW_Y, WINDOW_MODE, FRAMERATE);
-	astart->RegisterActionData(&input_state.bits, action_names, keys, controller_buttons, controller_button_names, ACTION_COUNT);
+	astart->RegisterActionData(&Amphora::input_state.bits, action_names, keys, controller_buttons, controller_button_names, ACTION_COUNT);
 	astart->RegisterSceneData(scene_structs, scene_names, SCENES_COUNT);
 	astart->RegisterImageData(img_names, img_paths, IMAGES_COUNT);
 	astart->RegisterFontData(font_names, font_paths, FONTS_COUNT);

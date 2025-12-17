@@ -137,7 +137,7 @@ namespace Amphora
 		}
 	};
 
-	const inline InputState *Actions;
+	extern const InputState& Actions;
 	inline RuntimeBoundConstRef<const unsigned int> CurrentFrame;
 
 #define AMPHORA_VFUNCTION_V1(ret, name, sig_args, p_sig_args, call_args) ret name sig_args;

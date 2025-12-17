@@ -44,7 +44,7 @@ public:
 			quitText.Typewriter(24);
 		}
 
-		if (Actions->Quit) QuitGame();
+		if (Actions.Quit) QuitGame();
 		if (quitText.Clicked(MouseLeftButton)) QuitGame();
 	}
 
