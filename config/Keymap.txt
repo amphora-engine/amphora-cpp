@@ -1,2 +1,2 @@
-// KMAP(action, key, controller)
-KMAP(quit, ESCAPE, INVALID)
+// KMAP(Action, key, controller)
+KMAP(Quit, ESCAPE, INVALID)

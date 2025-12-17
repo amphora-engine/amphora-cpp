@@ -1,3 +1,6 @@
+#include <iostream>
+#include <ostream>
+
 #include "Amphora.h"
 
 using namespace Amphora;
@@ -14,7 +17,7 @@ public:
 	static MainScene& instance();
 
 	void
-	init()
+	Init()
 	override
 	{
 		SetBGColor(Colors::sky);
@@ -29,7 +32,7 @@ public:
 	}
 
 	void
-	update(unsigned int frame, const InputState* input)
+	Update()
 	override
 	{
 		bool welcomeTextShown = false;
@@ -44,12 +47,12 @@ public:
 			quitText.Typewriter(24);
 		}
 
-		if (input->quit) QuitGame();
+		if (Actions->Quit) QuitGame();
 		if (quitText.Clicked(MouseLeftButton)) QuitGame();
 	}
 
 	void
-	destroy()
+	Destroy()
 	override
 	{}
 };

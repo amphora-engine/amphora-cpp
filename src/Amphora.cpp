@@ -20,6 +20,7 @@ struct AmphoraStartup
 {
 	char *engine_version;
 	int api_version;
+	const unsigned int * (*GetFrameAddress)();
 	int (*StartEngine)();
 	void (*RegisterGameData)(const char *, const char *);
 	void (*RegisterWindowTitle)(const char *);
@@ -330,9 +331,9 @@ static input_state_u input_state;
 
 /* Scene data */
 
-void Scene::init() {}
-void Scene::update(unsigned int, const InputState*) {}
-void Scene::destroy() {}
+void Scene::Init() {}
+void Scene::Update() {}
+void Scene::Destroy() {}
 Scene::~Scene() = default;
 
 static AmphoraScene scene_structs[] = {
@@ -648,8 +649,10 @@ load_engine()
 int
 main()
 {
-
 	if (load_engine() == -1) return -1;
+
+	Amphora::Actions = &input_state.state;
+	Amphora::CurrentFrame.bind(astart->GetFrameAddress());
 
 	astart->RegisterGameData(GAME_AUTHOR, GAME_TITLE);
 	astart->RegisterWindowTitle(GAME_TITLE);

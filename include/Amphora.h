@@ -116,6 +116,24 @@ struct AmphoraAPI_V1
 
 namespace Amphora
 {
+	template<typename T>
+	class LateBoundConstRef
+	{
+		const T *ptr = nullptr;
+	public:
+		void bind(T *p)
+		{
+			if (ptr != nullptr) return;
+
+			ptr = p;
+		}
+
+		operator T const &() const { return *ptr; }
+	};
+
+	const inline InputState *Actions;
+	inline LateBoundConstRef<const unsigned int> CurrentFrame;
+
 #define AMPHORA_VFUNCTION_V1(ret, name, sig_args, p_sig_args, call_args) ret name sig_args;
 #define AMPHORA_FUNCTION_V1(ret, name, sig_args, call_args) ret name sig_args;
 #define AMPHORA_ROUTINE_V1(name, sig_args, call_args) void name sig_args;
@@ -202,15 +220,15 @@ namespace Amphora
 
 struct AmphoraScene {
 	void (*init_func)();
-	void (*update_func)(unsigned int, const InputState *);
+	void (*update_func)();
 	void (*destroy_func)();
 };
 
 class Scene {
 public:
-	virtual void init();
-	virtual void update(unsigned int frame, const InputState* input);
-	virtual void destroy();
+	virtual void Init();
+	virtual void Update();
+	virtual void Destroy();
 
 	virtual ~Scene();
 };
@@ -227,9 +245,9 @@ return inst; \
 } \
 AmphoraScene name##_get_c_scene() { \
 return { \
-[]{ name::instance().init(); }, \
-[](unsigned int f, const InputState* i){ name::instance().update(f, i); }, \
-[]{ name::instance().destroy(); } \
+[]{ name::instance().Init(); }, \
+[]{ name::instance().Update(); }, \
+[]{ name::instance().Destroy(); } \
 }; \
 }
 
