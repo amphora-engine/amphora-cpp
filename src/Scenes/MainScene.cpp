@@ -1,6 +1,3 @@
-#include <iostream>
-#include <ostream>
-
 #include "Amphora.h"
 
 using namespace Amphora;

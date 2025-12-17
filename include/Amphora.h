@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <cstdarg>
 #include <cstddef>
 #include <cstdint>
@@ -117,22 +118,27 @@ struct AmphoraAPI_V1
 namespace Amphora
 {
 	template<typename T>
-	class LateBoundConstRef
+	class RuntimeBoundConstRef
 	{
 		const T *ptr = nullptr;
 	public:
-		void bind(T *p)
+		void bind(T const *p)
 		{
-			if (ptr != nullptr) return;
+			assert(p != nullptr);
+			assert(ptr == nullptr);
 
 			ptr = p;
 		}
 
-		operator T const &() const { return *ptr; }
+		operator T const &() const
+		{
+			assert(ptr != nullptr);
+			return *ptr;
+		}
 	};
 
 	const inline InputState *Actions;
-	inline LateBoundConstRef<const unsigned int> CurrentFrame;
+	inline RuntimeBoundConstRef<const unsigned int> CurrentFrame;
 
 #define AMPHORA_VFUNCTION_V1(ret, name, sig_args, p_sig_args, call_args) ret name sig_args;
 #define AMPHORA_FUNCTION_V1(ret, name, sig_args, call_args) ret name sig_args;
