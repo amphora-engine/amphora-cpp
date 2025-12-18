@@ -16,14 +16,6 @@
 #define Amphora_IsOdd(a) ((a) & 1)
 #define Amphora_IsEven(a) (!Amphora_IsOdd((a)))
 
-enum AmphoraCollision {
-	AMPHORA_COLLISION_NONE,
-	AMPHORA_COLLISION_LEFT,
-	AMPHORA_COLLISION_RIGHT,
-	AMPHORA_COLLISION_TOP,
-	AMPHORA_COLLISION_BOTTOM
-};
-
 enum AmphoraStatusCode {
 	AMPHORA_STATUS_OK,
 	AMPHORA_STATUS_ALLOC_FAIL,
@@ -156,6 +148,11 @@ namespace Amphora
 #undef COLOR
 	}
 
+	enum class Collision
+	{
+		None, Left, Right, Top, Bottom
+	};
+
 	class Sprite
 	{
 		AmphoraImage *imageHandle = nullptr;
@@ -180,7 +177,7 @@ namespace Amphora
 		int Hide();
 		bool CheckCollision(const Sprite& other);
 		bool CheckCollision(Sprite *other);
-		AmphoraCollision CheckObjectGroupCollision(const char *name);
+		Collision CheckObjectGroupCollision(const char *name);
 		bool MouseOver();
 		bool Clicked(int button, void (*callback)() = nullptr);
 		void ApplyFX(void (*fx)(AmphoraSurface *));

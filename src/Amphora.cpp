@@ -163,9 +163,11 @@ namespace Amphora
 		return aapi_v1->CheckCollision(imageHandle, other->imageHandle);
 	}
 
-	AmphoraCollision Sprite::CheckObjectGroupCollision(const char *name)
+	Collision Sprite::CheckObjectGroupCollision(const char *name)
 	{
-		return aapi_v1->CheckObjectGroupCollision(imageHandle, name);
+		int c = aapi_v1->CheckObjectGroupCollision(imageHandle, name);
+
+		return static_cast<Collision>(c);
 	}
 
 	bool Sprite::MouseOver()
