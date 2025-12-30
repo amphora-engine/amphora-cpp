@@ -39,11 +39,10 @@ static AmphoraStartup *astart;
 
 namespace Amphora
 {
-	union input_state_u {
+	static union {
 		InputState state;
 		uint32_t bits;
-	};
-	static input_state_u input_state;
+	} input_state;
 
 	static AmphoraAPI_V1 *aapi_v1;
 	const InputState& Actions = input_state.state;
@@ -197,7 +196,7 @@ namespace Amphora
 
 	Emitter::Emitter(float x, float y, float w, float h, float start_x, float start_y,
 		int spread_x, int spread_y, int count, float p_w, float p_h, AmphoraColor color, bool stationary, int order,
-		void (*update_fn)(int, int, AmphoraParticle *, AmphoraParticleExt *, const AmphoraFRect *))
+		void (*update_fn)(AmphoraParticle *, const AmphoraFRect *))
 	{
 		emitterHandle = aapi_v1->CreateEmitter(x, y, w, h, start_x, start_y, spread_x, spread_y, count, p_w, p_h, color, stationary, order, update_fn);
 	}
@@ -585,9 +584,9 @@ load_engine()
 
 #if defined(__APPLE__) || defined(__linux__)
 #ifdef DEBUG
-	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-debug/src/libamphora-vanilla-v0.2.4-alpha-dbg.dylib", RTLD_NOW);
+	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-debug/src/libamphora-vanilla-v0.3.0-alpha-dbg.dylib", RTLD_NOW);
 #else
-	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-release/src/libamphora-vanilla-v0.2.4-alpha.dylib", RTLD_NOW);
+	engine = dlopen("/Users/caleb/src/amphora/amphora-engine/cmake-build-release/src/libamphora-vanilla-v0.3.0-alpha.dylib", RTLD_NOW);
 #endif
 
 	if (engine == nullptr)

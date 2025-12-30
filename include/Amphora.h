@@ -76,9 +76,6 @@ struct AmphoraParticle
 {
 	float x, y, w, h, vx, vy;
 	AmphoraColor color;
-};
-
-struct AmphoraParticleExt {
 	float data1, data2;
 	int data3, data4;
 	bool hidden;
@@ -192,7 +189,7 @@ namespace Amphora
 	public:
 		Emitter(float x, float y, float w, float h, float start_x, float start_y,
 			int spread_x, int spread_y, int count, float p_w, float p_h, AmphoraColor color, bool stationary, int order,
-			void (*update_fn)(int, int, AmphoraParticle *, AmphoraParticleExt *, const AmphoraFRect *));
+			void (*update_fn)(AmphoraParticle *, const AmphoraFRect *));
 		~Emitter();
 	};
 
