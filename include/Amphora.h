@@ -160,8 +160,8 @@ namespace Amphora
 		Vector2f Position();
 		Vector2f Center();
 		bool Flipped();
-		int AddFrameset(const char *name, const char *override_img, int sx, int sy,
-			int w, int h, float off_x, float off_y, int num_frames, int delay);
+		int AddFrameset(const char *name, int sx, int sy, int w, int h, float off_x, float off_y,
+			int num_frames, int delay, const char *override_img = nullptr);
 		void SetFrameset(const char *name);
 		void PlayOneshot(const char *name, void (*callback)() = nullptr);
 		int SetFramesetAnimationTime(const char *name, int delay);

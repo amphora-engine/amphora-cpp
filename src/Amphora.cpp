@@ -96,8 +96,8 @@ namespace Amphora
 		return aapi_v1->IsSpriteFlipped(imageHandle);
 	}
 
-	int Sprite::AddFrameset(const char *name, const char *override_img, int sx, int sy,
-		int w, int h, float off_x, float off_y, int num_frames, int delay)
+	int Sprite::AddFrameset(const char *name, int sx, int sy, int w, int h, float off_x, float off_y,
+		int num_frames, int delay, const char *override_img)
 	{
 		return aapi_v1->AddFrameset(imageHandle, name, override_img, sx, sy, w, h, off_x, off_y, num_frames, delay);
 	}
