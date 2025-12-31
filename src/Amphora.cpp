@@ -66,9 +66,9 @@ namespace Amphora
 #undef AMPHORA_ROUTINE_V1
 #undef AMPHORA_METHOD_V1
 
-	Sprite::Sprite(const char *image_name, float x, float y, float scale, bool flip, bool stationary, bool transient, int order)
+	Sprite::Sprite(const std::string& image_name, float x, float y, float scale, bool flip, bool stationary, bool transient, int order)
 	{
-		imageHandle = aapi_v1->CreateSprite(image_name, x, y, scale, flip, stationary, transient, order);
+		imageHandle = aapi_v1->CreateSprite(image_name.c_str(), x, y, scale, flip, stationary, transient, order);
 
 		if (imageHandle == nullptr)
 		{
@@ -96,25 +96,27 @@ namespace Amphora
 		return aapi_v1->IsSpriteFlipped(imageHandle);
 	}
 
-	int Sprite::AddFrameset(const char *name, int sx, int sy, int w, int h, float off_x, float off_y,
-		int num_frames, int delay, const char *override_img)
+	int Sprite::AddFrameset(const std::string& name, int sx, int sy, int w, int h, float off_x, float off_y,
+		int num_frames, int delay, const std::string& override_img)
 	{
-		return aapi_v1->AddFrameset(imageHandle, name, override_img, sx, sy, w, h, off_x, off_y, num_frames, delay);
+		const char *override_img_c = override_img.empty() ? nullptr : override_img.c_str();
+
+		return aapi_v1->AddFrameset(imageHandle, name.c_str(), sx, sy, w, h, off_x, off_y, num_frames, delay, override_img_c);
 	}
 
-	void Sprite::SetFrameset(const char *name)
+	void Sprite::SetFrameset(const std::string& name)
 	{
-		aapi_v1->SetFrameset(imageHandle, name);
+		aapi_v1->SetFrameset(imageHandle, name.c_str());
 	}
 
-	void Sprite::PlayOneshot(const char *name, void (*callback)())
+	void Sprite::PlayOneshot(const std::string& name, void (*callback)())
 	{
-		aapi_v1->PlayOneshot(imageHandle, name, callback);
+		aapi_v1->PlayOneshot(imageHandle, name.c_str(), callback);
 	}
 
-	int Sprite::SetFramesetAnimationTime(const char *name, int delay)
+	int Sprite::SetFramesetAnimationTime(const std::string& name, int delay)
 	{
-		return aapi_v1->SetFramesetAnimationTime(imageHandle, name, delay);
+		return aapi_v1->SetFramesetAnimationTime(imageHandle, name.c_str(), delay);
 	}
 
 	int Sprite::Reorder(int order)
@@ -162,9 +164,9 @@ namespace Amphora
 		return aapi_v1->CheckCollision(imageHandle, other->imageHandle);
 	}
 
-	Collision Sprite::CheckObjectGroupCollision(const char *name)
+	Collision Sprite::CheckObjectGroupCollision(const std::string& name)
 	{
-		int c = aapi_v1->CheckObjectGroupCollision(imageHandle, name);
+		int c = aapi_v1->CheckObjectGroupCollision(imageHandle, name.c_str());
 
 		return static_cast<Collision>(c);
 	}
@@ -206,12 +208,12 @@ namespace Amphora
 		aapi_v1->DestroyEmitter(emitterHandle);
 	}
 
-	String::String(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, bool transient, const char *fmt, ...)
+	String::String(const std::string& font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, bool transient, const char *fmt, ...)
 	{
 		va_list args;
 
 		va_start(args, fmt);
-		stringHandle = aapi_v1->CreateString(font_name, pt, x, y, order, color, stationary, transient, fmt, args);
+		stringHandle = aapi_v1->CreateString(font_name.c_str(), pt, x, y, order, color, stationary, transient, fmt, args);
 		va_end(args);
 	}
 	String::~String()

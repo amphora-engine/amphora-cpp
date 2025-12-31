@@ -4,6 +4,7 @@
 #include <cstdarg>
 #include <cstddef>
 #include <cstdint>
+#include <string>
 
 #include "Amphora_SDL.h"
 
@@ -154,17 +155,17 @@ namespace Amphora
 	{
 		AmphoraImage *imageHandle = nullptr;
 	public:
-		Sprite(const char *image_name, float x, float y, float scale, bool flip, bool stationary, bool transient, int order);
+		Sprite(const std::string& image_name, float x, float y, float scale, bool flip, bool stationary, bool transient, int order);
 		~Sprite();
 
 		Vector2f Position();
 		Vector2f Center();
 		bool Flipped();
-		int AddFrameset(const char *name, int sx, int sy, int w, int h, float off_x, float off_y,
-			int num_frames, int delay, const char *override_img = nullptr);
-		void SetFrameset(const char *name);
-		void PlayOneshot(const char *name, void (*callback)() = nullptr);
-		int SetFramesetAnimationTime(const char *name, int delay);
+		int AddFrameset(const std::string& name, int sx, int sy, int w, int h, float off_x, float off_y,
+			int num_frames, int delay, const std::string& override_img = "");
+		void SetFrameset(const std::string& name);
+		void PlayOneshot(const std::string& name, void (*callback)() = nullptr);
+		int SetFramesetAnimationTime(const std::string& name, int delay);
 		int Reorder(int order);
 		int SetLocation(float x, float y);
 		int Move(float delta_x, float delta_y);
@@ -174,7 +175,7 @@ namespace Amphora
 		int Hide();
 		bool CheckCollision(const Sprite& other);
 		bool CheckCollision(Sprite *other);
-		Collision CheckObjectGroupCollision(const char *name);
+		Collision CheckObjectGroupCollision(const std::string& name);
 		bool MouseOver();
 		bool Clicked(int button, void (*callback)() = nullptr);
 		void ApplyFX(void (*fx)(AmphoraSurface *));
@@ -198,7 +199,7 @@ namespace Amphora
 		AmphoraString *stringHandle = nullptr;
 
 	public:
-		String(const char *font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, bool transient, const char *fmt, ...);
+		String(const std::string& font_name, int pt, float x, float y, int order, AmphoraColor color, bool stationary, bool transient, const char *fmt, ...);
 		~String();
 
 		void Show();
